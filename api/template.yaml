@@ -40,35 +40,11 @@ Resources:
     Properties:
       StageName: Prod
       DefinitionBody:
-        swagger: "2.0"
-        info:
-          title: "Hello World Api"
-        paths:
-          /hello-world-js: 
-            post:
-              x-amazon-apigateway-integration:
-                credentials:
-                  Fn::GetAtt: HelloWorldApiRole.Arn
-                type: aws_proxy
-                httpMethod: POST
-                uri: 
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
-                responses:
-                  default:
-                      statusCode: '200' 
-          /hello-world-go: 
-            post:
-              x-amazon-apigateway-integration:
-                credentials:
-                  Fn::GetAtt: HelloWorldApiRole.Arn
-                type: aws_proxy
-                httpMethod: POST
-                uri: 
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldGoFunction.Arn}/invocations
-                responses:
-                  default:
-                    statusCode: '200' 
-
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ./swagger.yaml
+            
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:

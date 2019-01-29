@@ -38,34 +38,10 @@ Resources:
   HelloWorldApi:
     Properties:
       DefinitionBody:
-        info:
-          title: Hello World Api
-        paths:
-          /hello-world-go:
-            post:
-              x-amazon-apigateway-integration:
-                credentials:
-                  Fn::GetAtt: HelloWorldApiRole.Arn
-                httpMethod: POST
-                responses:
-                  default:
-                    statusCode: '200'
-                type: aws_proxy
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldGoFunction.Arn}/invocations
-          /hello-world-js:
-            post:
-              x-amazon-apigateway-integration:
-                credentials:
-                  Fn::GetAtt: HelloWorldApiRole.Arn
-                httpMethod: POST
-                responses:
-                  default:
-                    statusCode: '200'
-                type: aws_proxy
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
-        swagger: '2.0'
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: s3://hello-world-abbottdev/a2c8fd2a1de6bdfdaa1831c913f91bba
       StageName: Prod
     Type: AWS::Serverless::Api
   HelloWorldApiRole:
