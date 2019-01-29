@@ -93,7 +93,7 @@ Resources:
     Type: AWS::IAM::Role
   HelloWorldFunction:
     Properties:
-      CodeUri: s3://hello-world-abbottdev/0b265fd272216c35dbcec433e42a9138
+      CodeUri: s3://hello-world-abbottdev/251934b943fe1984d5b737c5ce9810b4
       Environment: null
       Events:
         HelloWorld:
@@ -112,7 +112,7 @@ Resources:
     Type: AWS::Serverless::Function
   HelloWorldGoFunction:
     Properties:
-      CodeUri: s3://hello-world-abbottdev/778541a79e872ee3c7f4ca9acd1f4ccd
+      CodeUri: s3://hello-world-abbottdev/78f1f871f9030a202e82bd6d06aad4bb
       Events:
         HelloWorld:
           Properties:

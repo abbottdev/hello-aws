@@ -6,24 +6,24 @@ AWS_STACK_NAME = hello-world-stack
 .PHONY:install
 install:
 	cd lambda/nodejs/ && npm install && cd ../
+	go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
 
 .PHONY:build
 build:
-	cd lambda/go/ && set GOOS=linux&& set GOARCH=amd64&& go build -i -o "build/main" main.go 
-
-	@echo "-gcflags=-N -gcflags=-l"
+	cd lambda/go/ && set GOOS=linux&& set GOARCH=amd64&& set CGO_ENABLED=0&& go build -i -o "build/main" main.go 
+	cd lambda/go/build && "%GOPATH%\bin\build-lambda-zip.exe" -o main.zip main
 
 .PHONY:run
 run: build
 	sam local start-api --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug
 
 .PHONY:test
-test:
+test: build
 	cd lambda/nodejs/ && npm run test
 	cd lambda/go/ && go test -v ./
 
 .PHONY:package
-package: build test
+package: test
 	sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket $(AWS_CLOUDFORMATION_BUCKET) --profile $(AWS_PROFILE) 
 
 .PHONY:deploy

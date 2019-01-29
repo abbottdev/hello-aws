@@ -5,6 +5,7 @@ AWS_STACK_NAME = hello-world-stack
 
 .PHONY:install
 install:
+	cp scripts/githooks/* .git/hooks
 	cd api && $(MAKE) install
 
 .PHONY:build
