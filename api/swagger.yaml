@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  description: This is a simple API for displaying hello world in different AWS runtimes.
+  version: "1.0.0"
+  title: Hello World API
+x-amazon-apigateway-request-validators:
+  basic:
+    validateRequestBody: true
+    validateRequestParameters: true
+paths:
+  hello-world/:
+    js/:
+      get:
+        x-amazon-apigateway-integration:
+          credentials:
+            Fn::GetAtt: HelloWorldFunctionRole.Arn
+          type: aws
+          httpMethod: get
+          uri: 
+            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
+        responses:
+          default:
+            statusCode: '200'
+        security: 
+          - cognitoUserPool: []
+  go/:
+    get:
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt: HelloWorldGoFunctionRole.Arn
+        type: aws
+        httpMethod: get
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldGoFunction.Arn}/invocations
+    responses:
+      default:
+        statusCode: '200'

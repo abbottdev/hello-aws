@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'hello-world
+
+  Sample SAM Template for hello-world
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Outputs:
+  HelloWorldApiEndpoint:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello-world/js/
+  HelloWorldApiRole:
+    Description: IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HelloWorldApiRole
+      - Arn
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction
+      - Arn
+  HelloWorldGoApiEndpoint:
+    Description: API Gateway endpoint URL for Prod stage for Hello World Go function
+    Value:
+      Fn::Sub: https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello-world/go/
+  HelloWorldGoFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldGoFunction
+      - Arn
+Resources:
+  HelloWorldApi:
+    Properties:
+      DefinitionBody:
+        info:
+          title: Hello World Api
+        paths:
+          /hello-world-go:
+            post:
+              x-amazon-apigateway-integration:
+                credentials:
+                  Fn::GetAtt: HelloWorldApiRole.Arn
+                httpMethod: POST
+                responses:
+                  default:
+                    statusCode: '200'
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldGoFunction.Arn}/invocations
+          /hello-world-js:
+            post:
+              x-amazon-apigateway-integration:
+                credentials:
+                  Fn::GetAtt: HelloWorldApiRole.Arn
+                httpMethod: POST
+                responses:
+                  default:
+                    statusCode: '200'
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
+        swagger: '2.0'
+      StageName: Prod
+    Type: AWS::Serverless::Api
+  HelloWorldApiRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+            - apigateway.amazonaws.com
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+      - PolicyDocument:
+          Statement:
+          - Action: '*'
+            Effect: Allow
+            Resource: '*'
+          Version: '2012-10-17'
+        PolicyName: hello-world-api-role-policy
+      RoleName: hello-world-api-role
+    Type: AWS::IAM::Role
+  HelloWorldFunction:
+    Properties:
+      CodeUri: s3://hello-world-abbottdev/0b265fd272216c35dbcec433e42a9138
+      Environment: null
+      Events:
+        HelloWorld:
+          Properties:
+            Method: POST
+            Path: /hello-world-js
+            RestApiId:
+              Ref: HelloWorldApi
+          Type: Api
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+        - HelloWorldApiRole
+        - Arn
+      Runtime: nodejs8.10
+    Type: AWS::Serverless::Function
+  HelloWorldGoFunction:
+    Properties:
+      CodeUri: s3://hello-world-abbottdev/778541a79e872ee3c7f4ca9acd1f4ccd
+      Events:
+        HelloWorld:
+          Properties:
+            Method: POST
+            Path: /hello-world-go
+            RestApiId:
+              Ref: HelloWorldApi
+          Type: Api
+      Handler: main
+      Role:
+        Fn::GetAtt:
+        - HelloWorldApiRole
+        - Arn
+      Runtime: go1.x
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
