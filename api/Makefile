@@ -10,8 +10,8 @@ install:
 
 .PHONY:build
 build:
-	cd lambda/go/ && set GOOS=linux&& set GOARCH=amd64&& set CGO_ENABLED=0&& go build -i -o "build/main" main.go 
-	cd lambda/go/build && "%GOPATH%\bin\build-lambda-zip.exe" -o main.zip main
+	cd lambda/go/ && set GOOS=linux&& set GOARCH=amd64&& set CGO_ENABLED=0&& go.exe build -i -o "build/main" main.go 
+	cd lambda/go/build && "$(GOPATH)\bin\build-lambda-zip.exe" -o main.zip main
 
 .PHONY:run
 run: build
@@ -20,7 +20,7 @@ run: build
 .PHONY:test
 test: build
 	cd lambda/nodejs/ && npm run test
-	cd lambda/go/ && go test -v ./
+	cd lambda/go/ && go.exe test -v ./
 
 .PHONY:package
 package: test
