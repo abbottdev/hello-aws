@@ -43,12 +43,12 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: ./swagger.yaml
+            Location: file://./serverless/swagger.yaml
             
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./lambda/nodejs/
+      CodeUri: ./serverless/nodejs/
       Handler: app.lambdaHandler
       Runtime: nodejs8.10
       Role: !GetAtt HelloWorldApiRole.Arn
@@ -64,7 +64,7 @@ Resources:
   HelloWorldGoFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./lambda/go/build/main.zip
+      CodeUri: ./serverless/go/build/main.zip
       Handler: main
       Runtime: go1.x
       Role: !GetAtt HelloWorldApiRole.Arn
@@ -75,6 +75,7 @@ Resources:
             RestApiId: !Ref HelloWorldApi
             Path: /hello-world-go
             Method: POST
+    
 Outputs:
   HelloWorldApiEndpoint:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"

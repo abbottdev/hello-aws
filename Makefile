@@ -1,12 +1,8 @@
-AWS_REGION = eu-west-2
-AWS_BUCKET = hello-world-abbottdev
-AWS_PROFILE = hello-world-profile
-AWS_STACK_NAME = hello-world-stack 
 
 .PHONY:install
 install:
 	cp scripts/githooks/* .git/hooks
-	cd api && $(MAKE) install
+	cd api && $(MAKE) install 
 
 .PHONY:build
 build:

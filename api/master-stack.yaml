@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "API Stack CFN template"
+Resources:
+  HelloWorldApiServerlessStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ./serverless-stack.yaml
+  HelloWorldApiStorageStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ./storage-stack.yaml
+
+
+Outputs:
+  StackRef:
+    Value: !Ref HelloWorldApiServerlessStack
+  OutputFromNestedStack:
+    Value: !GetAtt HelloWorldApiServerlessStack.Outputs.HelloWorldApiEndpoint

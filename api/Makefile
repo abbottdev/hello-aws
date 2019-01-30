@@ -5,31 +5,39 @@ AWS_STACK_NAME = hello-world-stack
 
 .PHONY:install
 install:
-	cd lambda/nodejs/ && npm install && cd ../
-	go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
+	cd serverless && $(MAKE) install 
 
 .PHONY:build
 build:
-	cd lambda/go/ && set GOOS=linux&& set GOARCH=amd64&& set CGO_ENABLED=0&& go.exe build -i -o "build/main" main.go 
-	cd lambda/go/build && "$(GOPATH)\bin\build-lambda-zip.exe" -o main.zip main
+	cd serverless && $(MAKE) build
 
 .PHONY:run
 run: build
-	sam local start-api --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug
+	cd serverless && $(MAKE) run
 
 .PHONY:test
-test: build
-	cd lambda/nodejs/ && npm run test
-	cd lambda/go/ && go.exe test -v ./
+test:
+	cd serverless && $(MAKE) test
+
 
 .PHONY:package
 package: test
-	sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket $(AWS_CLOUDFORMATION_BUCKET) --profile $(AWS_PROFILE) 
+	sam package --template-file ./master-stack.yaml --output-template-file ./master-stack-packaged.yaml --s3-bucket $(AWS_CLOUDFORMATION_BUCKET) --profile $(AWS_PROFILE) 
 
 .PHONY:deploy
 deploy: package
-	sam deploy --template-file packaged.yaml --stack-name $(AWS_STACK_NAME) --capabilities CAPABILITY_NAMED_IAM --profile $(AWS_PROFILE)  --region $(AWS_REGION)
-	aws cloudformation describe-stacks --stack-name $(AWS_STACK_NAME) --query 'Stacks[].Outputs'
+	sam deploy --template-file ./master-stack-packaged.yaml --stack-name $(AWS_STACK_NAME) --capabilities "CAPABILITY_IAM" "CAPABILITY_AUTO_EXPAND" "CAPABILITY_NAMED_IAM"  --profile $(AWS_PROFILE) --region $(AWS_REGION)
+
+.PHONY:outputs
+outputs:
+	aws cloudformation describe-stacks --stack-name hello-world-stack  --query "Stacks[].Outputs[]" 
+# aws cloudformation describe-stacks --stack-name hello-world-stack  --query "Stacks[0].Outputs[?OutputKey=='HelloWorldGoApiEndpoint'].OutputValue" --output text
+
+#.PHONY:outputs
+#outputs:
+#		@aws cloudformation describe-stacks \
+#			--region $(AWS_REGION) \
+#			--stack-name $(AWS_STACK_NAME) > ./outputs/stacks.json
 
 .PHONY:infrastructure
 infrastructure: 
