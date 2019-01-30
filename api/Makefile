@@ -22,11 +22,11 @@ test:
 
 .PHONY:package
 package: test
-	sam package --template-file ./master-stack.yaml --output-template-file ./master-stack-packaged.yaml --s3-bucket $(AWS_CLOUDFORMATION_BUCKET) --profile $(AWS_PROFILE) 
+	cd ./cloudformation/ && sam package --template-file ./master-stack.yaml --output-template-file ./master-stack-packaged.yaml --s3-bucket $(AWS_CLOUDFORMATION_BUCKET) --profile $(AWS_PROFILE) 
 
 .PHONY:deploy
 deploy: package
-	sam deploy --template-file ./master-stack-packaged.yaml --stack-name $(AWS_STACK_NAME) --capabilities "CAPABILITY_IAM" "CAPABILITY_AUTO_EXPAND" "CAPABILITY_NAMED_IAM"  --profile $(AWS_PROFILE) --region $(AWS_REGION)
+	cd ./cloudformation/ && sam deploy --template-file ./master-stack-packaged.yaml --stack-name $(AWS_STACK_NAME) --capabilities "CAPABILITY_IAM" "CAPABILITY_AUTO_EXPAND" "CAPABILITY_NAMED_IAM"  --profile $(AWS_PROFILE) --region $(AWS_REGION)
 
 .PHONY:outputs
 outputs:

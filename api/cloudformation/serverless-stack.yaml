@@ -43,12 +43,12 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: file://./serverless/swagger.yaml
+            Location: ./swagger.yaml
             
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./serverless/nodejs/
+      CodeUri: ../serverless/nodejs/
       Handler: app.lambdaHandler
       Runtime: nodejs8.10
       Role: !GetAtt HelloWorldApiRole.Arn
@@ -64,7 +64,7 @@ Resources:
   HelloWorldGoFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./serverless/go/build/main.zip
+      CodeUri: ../serverless/go/build/main.zip
       Handler: main
       Runtime: go1.x
       Role: !GetAtt HelloWorldApiRole.Arn
