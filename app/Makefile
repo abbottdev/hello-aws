@@ -8,15 +8,15 @@ build:
 	npm run build
 
 .PHONY:run
-run: build
+run: 
 	npm start
 
 .PHONY:test
-test: build 
+test:  
 	npm run test
 
 .PHONY:package
-package: test
+package: 
 	zip build > build.zip
 
 .PHONY:outputs
@@ -24,7 +24,7 @@ outputs:
 	
 
 .PHONY:deploy
-deploy: package
+deploy: 
 	
 .PHONY:infrastructure
 infrastructure: 
