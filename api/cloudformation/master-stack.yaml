@@ -8,11 +8,23 @@ Resources:
   HelloWorldApiStorageStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
-      TemplateURL: ./storage-stack.yaml
-
+      TemplateURL: ./storage-stack.yaml 
 
 Outputs:
-  StackRef:
+  StorageStackRef:
+    Value: !Ref HelloWorldApiStorageStack
+
+  ServerlessStackRef:
     Value: !Ref HelloWorldApiServerlessStack
-  OutputFromNestedStack:
+
+  ServerlessStackHelloWorldApiEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !GetAtt HelloWorldApiServerlessStack.Outputs.HelloWorldApiEndpoint
+    
+  ServerlessStackHelloWorldFunctionArn:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt HelloWorldApiServerlessStack.Outputs.HelloWorldFunction
+    
+  ServerlessStackHelloWorldApiRole:
+    Description: "IAM Role created for Hello World Api"
+    Value: !GetAtt HelloWorldApiServerlessStack.Outputs.HelloWorldApiRole

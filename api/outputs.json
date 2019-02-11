@@ -1,0 +1,25 @@
+[
+    {
+        "Description": "Hello World Lambda Function ARN", 
+        "OutputKey": "ServerlessStackHelloWorldFunctionArn", 
+        "OutputValue": "arn:aws:lambda:eu-west-2:158176244280:function:hello-world-master-stack-HelloW-HelloWorldFunction-1J9BAYKX54UVG"
+    }, 
+    {
+        "Description": "IAM Role created for Hello World Api", 
+        "OutputKey": "ServerlessStackHelloWorldApiRole", 
+        "OutputValue": "arn:aws:iam::158176244280:role/hello-world-api-role"
+    }, 
+    {
+        "OutputKey": "StorageStackRef", 
+        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-HelloWorldApiStorageStack-XSLVBS28ZIYB/9d24a960-2d2b-11e9-9e79-0ac355ff12be"
+    }, 
+    {
+        "Description": "API Gateway endpoint URL for Prod stage for Hello World function", 
+        "OutputKey": "ServerlessStackHelloWorldApiEndpoint", 
+        "OutputValue": "https://jyqkde1u85.execute-api.eu-west-2.amazonaws.com/Prod/"
+    }, 
+    {
+        "OutputKey": "ServerlessStackRef", 
+        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-HelloWorldApiServerlessStack-ZDLIUQZ5WVGY/9d2126f0-2d2b-11e9-bc77-066491b27f84"
+    }
+]

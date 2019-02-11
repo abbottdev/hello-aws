@@ -1,4 +1,3 @@
-AWS_REGION = eu-west-2
 AWS_PROFILE = hello-world-profile
 
 ifeq ($(OS),Windows_NT) 
@@ -11,7 +10,6 @@ endif
 install:
 	cd nodejs/ && npm install && cd ../
 	go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
-# docker network create sam-local-dynamodb
 
 .PHONY:build
 build:
@@ -21,8 +19,8 @@ build:
 	cd go/build && "$(GOPATH)\bin\build-lambda-zip.exe" -o main.zip main
 
 .PHONY:run
-run: build
-	sam local start-api --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug
+run:
+	sam local start-api --template ../cloudformation/serverless-stack.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug --docker-network sam-local 
 
 .PHONY:test
 test: build

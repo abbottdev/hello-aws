@@ -1,20 +1,36 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: API Stack CFN template
 Outputs:
-  OutputFromNestedStack:
+  ServerlessStackHelloWorldApiEndpoint:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
     Value:
       Fn::GetAtt:
       - HelloWorldApiServerlessStack
       - Outputs.HelloWorldApiEndpoint
-  StackRef:
+  ServerlessStackHelloWorldApiRole:
+    Description: IAM Role created for Hello World Api
+    Value:
+      Fn::GetAtt:
+      - HelloWorldApiServerlessStack
+      - Outputs.HelloWorldApiRole
+  ServerlessStackHelloWorldFunctionArn:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldApiServerlessStack
+      - Outputs.HelloWorldFunction
+  ServerlessStackRef:
     Value:
       Ref: HelloWorldApiServerlessStack
+  StorageStackRef:
+    Value:
+      Ref: HelloWorldApiStorageStack
 Resources:
   HelloWorldApiServerlessStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/84d9958f83dd686229ed6c4d83a6fcfe.template
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/955cb78d6ac29dc0a1cc449e8369eae6.template
     Type: AWS::CloudFormation::Stack
   HelloWorldApiStorageStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/8417281c897c2fa51932f0302da33a1a.template
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/1acc3f4438586347ef3217df3f4d8b98.template
     Type: AWS::CloudFormation::Stack

@@ -6,7 +6,7 @@ Description: >
   Sample SAM Template for hello-world
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
 
 Resources:
   HelloWorldApiRole:
@@ -43,7 +43,7 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: ./swagger.yaml
+            Location: ../serverless/swagger.yaml
             
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -75,11 +75,11 @@ Resources:
             RestApiId: !Ref HelloWorldApi
             Path: /hello-world-go
             Method: POST
-    
+
 Outputs:
   HelloWorldApiEndpoint:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello-world/js/"
+    Value: !Sub "https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
   
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
@@ -88,10 +88,6 @@ Outputs:
   HelloWorldApiRole:
     Description: "IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldApiRole.Arn
-
-  HelloWorldGoApiEndpoint:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World Go function"
-    Value: !Sub "https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello-world/go/"
 
   HelloWorldGoFunction:
     Description: "Hello World Lambda Function ARN"
