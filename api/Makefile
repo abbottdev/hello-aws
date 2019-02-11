@@ -39,7 +39,7 @@ outputs:
 	(aws cloudformation describe-stacks --stack-name $(AWS_STACK_NAME) --query "Stacks[].Outputs[]" --region $(AWS_REGION)) > outputs.json
 
 # Map the output from cloudformation stacks into a better consumable key/value that can be accessed by clients.
-	cat ./outputs.json | docker run -i stedolan/jq "[ . [] | [ {\"key\": .OutputKey, \"value\": .OutputValue } ] | from_entries ] | add	" > ../app/config/stack.json
+	cat ./outputs.json | docker run -i stedolan/jq "[ . [] | [ {\"key\": .OutputKey, \"value\": .OutputValue } ] | from_entries ] | add	" > ../app/src/config/stack.json
 #[ . [] | [ {"key": .OutputKey, "value": .OutputValue } ] | from_entries ] | add	
 
 .PHONY:infrastructure
