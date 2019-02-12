@@ -1,0 +1,30 @@
+[
+    {
+        "Description": "The S3 Bucket name used to host the client website", 
+        "OutputKey": "ClientWebsiteBucketName", 
+        "OutputValue": "hello-world-master-stack-hostingsta-websitebucket-r57tsd9160a"
+    }, 
+    {
+        "Description": "API Gateway endpoint URL for Prod stage for Hello World function", 
+        "OutputKey": "ApiEndpointUrl", 
+        "OutputValue": "https://3lvv1a7wkg.execute-api.eu-west-2.amazonaws.com/Prod/"
+    }, 
+    {
+        "Description": "IAM Role created for Hello World Api", 
+        "OutputKey": "ApiRoleArn", 
+        "OutputValue": "arn:aws:iam::158176244280:role/api-role"
+    }, 
+    {
+        "OutputKey": "ApiStackRef", 
+        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-ApiStack-6A0D7ZDUHUNI/c300e130-2ed4-11e9-8a0c-0ad9e87c6998"
+    }, 
+    {
+        "OutputKey": "StorageStackRef", 
+        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-StorageStack-14B07W7EIZJ9J/c2e6a270-2ed4-11e9-9faf-0ab69c38e076"
+    }, 
+    {
+        "Description": "The URL used to access the frontend website", 
+        "OutputKey": "ClientWebsiteUrl", 
+        "OutputValue": "https://hello-world-master-stack-hostingsta-websitebucket-r57tsd9160a.s3.amazonaws.com"
+    }
+]

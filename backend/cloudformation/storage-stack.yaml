@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: A dynamo db that stores random nouns which can be queried by an AWS lambda
 Resources:
-  HelloNounDbTable:
+  NounDynamoDbTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:

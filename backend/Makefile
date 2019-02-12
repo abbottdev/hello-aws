@@ -5,7 +5,7 @@ install:
 	docker network inspect sam-local || docker network create sam-local
 	docker container inspect localstack || docker run -d -p 4567-4578:4567-4578 -p 8080:8080 --network sam-local --name localstack localstack/localstack
 
-	cd serverless && $(MAKE) install AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
+	cd api && $(MAKE) install AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
 	
 	docker run -v ${CURDIR}:/workdir mikefarah/yq yq r -j cloudformation/storage-stack.yaml Resources.HelloNounDbTable.Properties > create-table.json
 
@@ -16,15 +16,15 @@ install:
 
 .PHONY:build
 build:
-	cd serverless && $(MAKE) build
+	cd api && $(MAKE) build
 
 .PHONY:run
 run: build
-	cd serverless && $(MAKE) run
+	cd api && $(MAKE) run
 
 .PHONY:test
 test:
-	cd serverless && $(MAKE) test
+	cd api && $(MAKE) test
 
 .PHONY:package
 package: 
@@ -32,6 +32,7 @@ package:
 
 .PHONY:deploysam
 deploysam:
+#	cd ./cloudformation/  && sam validate -t master-stack-packaged.yaml --region $(AWS_REGION) --profile $(AWS_PROFILE)
 	cd ./cloudformation/ && sam deploy --template-file ./master-stack-packaged.yaml --stack-name $(AWS_STACK_NAME) --capabilities "CAPABILITY_IAM" "CAPABILITY_AUTO_EXPAND" "CAPABILITY_NAMED_IAM"  --profile $(AWS_PROFILE) --region $(AWS_REGION)
 
 .PHONY:deploy

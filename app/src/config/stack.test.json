@@ -1,7 +1,8 @@
 {
-  "ServerlessStackHelloWorldFunctionArn": "This is a Lambda ARN from test config",
-  "ServerlessStackHelloWorldApiRole": "This is an ApiRole ARN from test config",
-  "StorageStackRef": "This is a Stack ref ARN from test config",
-  "ServerlessStackHelloWorldApiEndpoint": "http://localhost:4000/",
-  "ServerlessStackRef": "This is a stack ref arn"
+  "ClientWebsiteBucketName": "hello-world-master-stack-hostingsta-websitebucket-r57tsd9160a",
+  "ApiEndpointUrl": "https://3lvv1a7wkg.execute-api.eu-west-2.amazonaws.com/Prod/",
+  "ApiRoleArn": "arn:aws:iam::158176244280:role/api-role",
+  "ApiStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-ApiStack-6A0D7ZDUHUNI/c300e130-2ed4-11e9-8a0c-0ad9e87c6998",
+  "StorageStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-StorageStack-14B07W7EIZJ9J/c2e6a270-2ed4-11e9-9faf-0ab69c38e076",
+  "ClientWebsiteUrl": "https://hello-world-master-stack-hostingsta-websitebucket-r57tsd9160a.s3.amazonaws.com"
 }

@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: API Stack CFN template
+Outputs:
+  ApiEndpointUrl:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::GetAtt:
+      - ApiStack
+      - Outputs.ApiEndpointUrl
+  ApiRoleArn:
+    Description: IAM Role created for Hello World Api
+    Value:
+      Fn::GetAtt:
+      - ApiStack
+      - Outputs.ApiRoleArn
+  ApiStackRef:
+    Value:
+      Ref: ApiStack
+  ClientWebsiteBucketName:
+    Description: The S3 Bucket name used to host the client website
+    Value:
+      Fn::GetAtt:
+      - HostingStack
+      - Outputs.WebsiteBucketName
+  ClientWebsiteUrl:
+    Description: The URL used to access the frontend website
+    Value:
+      Fn::GetAtt:
+      - HostingStack
+      - Outputs.S3BucketSecureURL
+  StorageStackRef:
+    Value:
+      Ref: StorageStack
+Resources:
+  ApiStack:
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/8c43172063c4a5031ac0b84a2c4848e6.template
+    Type: AWS::CloudFormation::Stack
+  HostingStack:
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/38186b3db59f79e607fdea8512031335.template
+    Type: AWS::CloudFormation::Stack
+  StorageStack:
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/ec6f8e813d7e914074eb3ec484ff6d3f.template
+    Type: AWS::CloudFormation::Stack

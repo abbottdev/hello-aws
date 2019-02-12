@@ -26,11 +26,11 @@ paths:
           content: {}
       x-amazon-apigateway-integration:
         credentials:
-          Fn::GetAtt: HelloWorldApiRole.Arn
+          Fn::GetAtt: ApiRole.Arn
         type: aws_proxy
         httpMethod: POST
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldJsFunction.Arn}/invocations
         responses:
           default:
             statusCode: "200"
@@ -72,7 +72,7 @@ paths:
     post:
       x-amazon-apigateway-integration:
         credentials:
-          Fn::GetAtt: HelloWorldApiRole.Arn
+          Fn::GetAtt: ApiRole.Arn
         type: aws_proxy
         httpMethod: POST
         uri: 

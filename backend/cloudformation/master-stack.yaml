@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "API Stack CFN template"
+Resources:
+  HostingStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ./hosting-stack.yaml
+  ApiStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ./api-stack.yaml
+  StorageStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ./storage-stack.yaml 
+
+Outputs:
+  StorageStackRef:
+    Value: !Ref StorageStack
+
+  ApiStackRef:
+    Value: !Ref ApiStack
+
+  ApiEndpointUrl:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !GetAtt ApiStack.Outputs.ApiEndpointUrl
+    
+  ClientWebsiteUrl:
+    Description: "The URL used to access the frontend website"
+    Value: !GetAtt HostingStack.Outputs.S3BucketSecureURL
+
+  ClientWebsiteBucketName:
+    Description: "The S3 Bucket name used to host the client website"
+    Value: !GetAtt HostingStack.Outputs.WebsiteBucketName
+
+  ApiRoleArn:
+    Description: "IAM Role created for Hello World Api"
+    Value: !GetAtt ApiStack.Outputs.ApiRoleArn

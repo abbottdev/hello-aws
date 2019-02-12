@@ -4,17 +4,16 @@ import './App.css';
 import axios from 'axios';
 import Endpoints from './config/endpoints';
 
-
 class App extends Component<{Endpoints: Endpoints}, {results: string, hasResults: boolean}> {
 
   constructor(props: any) {
     super(props);
-
+        
     this.state = { results: "", hasResults: false};
   }
 
   invokeNodeJsLambda = () => {
-    let url = this.props.Endpoints.ServerlessStackHelloWorldApiEndpoint + 'hello-world-js';
+    let url = this.props.Endpoints.ApiEndpointUrl + 'hello-world-js';
 
     this.setState({
       results: "",
@@ -31,7 +30,7 @@ class App extends Component<{Endpoints: Endpoints}, {results: string, hasResults
   }
   
   invokeGoLangLambda = () => {
-    let url = this.props.Endpoints.ServerlessStackHelloWorldApiEndpoint + 'hello-world-go';
+    let url = this.props.Endpoints.ApiEndpointUrl + 'hello-world-go';
 
     this.setState({
       results: "",
@@ -65,7 +64,7 @@ class App extends Component<{Endpoints: Endpoints}, {results: string, hasResults
             <pre>{this.state.results}</pre>
           </div>
           <p>
-            NodeJs Lambda ARN: <br /><small>{this.props.Endpoints.ServerlessStackHelloWorldFunctionArn}</small>
+            Api Role ARN: <br /><small>{this.props.Endpoints.ApiRoleArn}</small>
           </p>
         </header>
       </div>

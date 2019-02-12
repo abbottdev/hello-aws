@@ -1,5 +1,8 @@
-
-export default class Endpoints {
-  public ServerlessStackHelloWorldApiEndpoint: string= "";
-  public ServerlessStackHelloWorldFunctionArn: string= "";
+export default interface Endpoints {
+    ClientWebsiteBucketName: string
+    ApiEndpointUrl: string
+    ApiRoleArn: string
+    ApiStackRef: string
+    StorageStackRef: string
+    ClientWebsiteUrl: string
 }

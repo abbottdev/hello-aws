@@ -1,18 +1,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  hello-world
-
-  Sample SAM Template for hello-world
+  Hello World Api
 Globals:
   Function:
     Timeout: 30
 
 Resources:
-  HelloWorldApiRole:
+  ApiRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: hello-world-api-role
+      RoleName: api-role
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
         Statement: 
@@ -26,7 +24,7 @@ Resources:
               - "sts:AssumeRole"
       Path: "/"
       Policies: 
-        - PolicyName: hello-world-api-role-policy
+        - PolicyName: api-role-policy
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
@@ -35,7 +33,7 @@ Resources:
                 Action: "*"
                 Resource: "*"
 
-  HelloWorldApi:
+  ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
@@ -43,52 +41,52 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: ../serverless/swagger.yaml
+            Location: ../api/swagger.yaml
             
-  HelloWorldFunction:
+  HelloWorldJsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ../serverless/nodejs/
+      CodeUri: ../api/nodejs/
       Handler: app.lambdaHandler
       Runtime: nodejs8.10
-      Role: !GetAtt HelloWorldApiRole.Arn
+      Role: !GetAtt ApiRole.Arn
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            RestApiId: !Ref HelloWorldApi
+            RestApiId: !Ref ApiGatewayApi
             Path: /hello-world-js
             Method: POST
   
   HelloWorldGoFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ../serverless/go/build/main.zip
+      CodeUri: ../api/go/build/main.zip
       Handler: main
       Runtime: go1.x
-      Role: !GetAtt HelloWorldApiRole.Arn
+      Role: !GetAtt ApiRole.Arn
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            RestApiId: !Ref HelloWorldApi
+            RestApiId: !Ref ApiGatewayApi
             Path: /hello-world-go
             Method: POST
 
 Outputs:
-  HelloWorldApiEndpoint:
+  ApiEndpointUrl:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
   
-  HelloWorldFunction:
+  HelloWorldJsFunctionArn:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
+    Value: !GetAtt HelloWorldJsFunction.Arn
 
-  HelloWorldApiRole:
-    Description: "IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldApiRole.Arn
+  ApiRoleArn:
+    Description: "IAM Role created for the Api Gateway"
+    Value: !GetAtt ApiRole.Arn
 
-  HelloWorldGoFunction:
-    Description: "Hello World Lambda Function ARN"
+  HelloWorldGoFunctionArn:
+    Description: "Hello World Go Lambda Function ARN"
     Value: !GetAtt HelloWorldGoFunction.Arn
