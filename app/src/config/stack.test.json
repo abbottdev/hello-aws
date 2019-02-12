@@ -1,0 +1,7 @@
+{
+  "ServerlessStackHelloWorldFunctionArn": "This is a Lambda ARN from test config",
+  "ServerlessStackHelloWorldApiRole": "This is an ApiRole ARN from test config",
+  "StorageStackRef": "This is a Stack ref ARN from test config",
+  "ServerlessStackHelloWorldApiEndpoint": "http://localhost:4000/",
+  "ServerlessStackRef": "This is a stack ref arn"
+}

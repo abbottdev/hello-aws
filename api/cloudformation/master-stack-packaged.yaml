@@ -28,7 +28,7 @@ Outputs:
 Resources:
   HelloWorldApiServerlessStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/955cb78d6ac29dc0a1cc449e8369eae6.template
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/e8e906a06894c641f2b93043c87dbe26.template
     Type: AWS::CloudFormation::Stack
   HelloWorldApiStorageStack:
     Properties:

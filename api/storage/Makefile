@@ -10,7 +10,6 @@ install-storage:
 			
 		rm create-table.json
 
-#	docker container stop dynamodb
 .PHONY:remove-storage
 remove-storage:
 	docker container stop localstack

@@ -1,4 +1,4 @@
-AWS_PROFILE = hello-world-profile
+
 
 ifeq ($(OS),Windows_NT) 
     DETECTED_OS := Windows
@@ -20,7 +20,7 @@ build:
 
 .PHONY:run
 run:
-	sam local start-api --template ../cloudformation/serverless-stack.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug --docker-network sam-local 
+	sam local start-api --template ../cloudformation/serverless-stack.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug --docker-network sam-local --port 4000
 
 .PHONY:test
 test: build

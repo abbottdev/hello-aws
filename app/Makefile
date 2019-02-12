@@ -1,4 +1,3 @@
-
 .PHONY:install
 install:
 	npm install
@@ -17,7 +16,6 @@ test:
 
 .PHONY:package
 package: 
-	zip build > build.zip
 
 .PHONY:outputs
 outputs: 

@@ -14,31 +14,38 @@ build:
 	cd app && $(MAKE) build
 
 .PHONY:run
-run: build
-	cd api && $(MAKE) run
-	cd app && $(MAKE) run
+run:
+	$(MAKE) run-api run-app -j 2
+
+.PHONY:run-api
+run-api:
+	(cd api && $(MAKE) run  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION))
+
+.PHONY:run-app
+run-app:
+	(cd app && $(MAKE) run  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION))
 
 .PHONY:test
-test: build 
+test: 
 	cd api && $(MAKE) test
 	cd app && $(MAKE) test
 
 .PHONY:package
 package: test
 	cd api && $(MAKE) package  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
-	cd app && $(MAKE) package
+	cd app && $(MAKE) package  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)
 
 .PHONY:outputs
 outputs: 
 	cd api && $(MAKE) outputs  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)
-	cd app && $(MAKE) outputs
+	cd app && $(MAKE) outputs  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)
 
 .PHONY:deploy
 deploy: package
 	cd api && $(MAKE) deploy  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)
-	cd app && $(MAKE) deploy
+	cd app && $(MAKE) deploy  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)
 
 .PHONY:infrastructure
 infrastructure: 
 	cd api && $(MAKE) infrastructure  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)
-	cd app && $(MAKE) infrastructure
+	cd app && $(MAKE) infrastructure  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION)

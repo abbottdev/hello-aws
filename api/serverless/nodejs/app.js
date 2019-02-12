@@ -45,7 +45,15 @@ exports.lambdaHandler = async (event, context) => {
             'body': JSON.stringify({
                 message: 'hello world',
                 location: ret.data.trim()
-            })
+            }),
+            'headers': {
+                "X-Requested-With": '*',
+                'Content-Type': 'application/json', 
+                "Access-Control-Allow-Headers": 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with',
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Methods": 'POST,GET,OPTIONS',
+                "Cache-Control": "no-cache"
+            }
         }
     } catch (err) {
         console.log(err);

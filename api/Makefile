@@ -30,16 +30,19 @@ test:
 package: 
 	cd ./cloudformation/ && sam package --template-file ./master-stack.yaml --output-template-file ./master-stack-packaged.yaml --s3-bucket $(AWS_CLOUDFORMATION_BUCKET) --profile $(AWS_PROFILE) 
 
-.PHONY:deploy
-deploy:
+.PHONY:deploysam
+deploysam:
 	cd ./cloudformation/ && sam deploy --template-file ./master-stack-packaged.yaml --stack-name $(AWS_STACK_NAME) --capabilities "CAPABILITY_IAM" "CAPABILITY_AUTO_EXPAND" "CAPABILITY_NAMED_IAM"  --profile $(AWS_PROFILE) --region $(AWS_REGION)
+
+.PHONY:deploy
+deploy: deploysam outputs
 
 .PHONY:outputs
 outputs:
 	(aws cloudformation describe-stacks --stack-name $(AWS_STACK_NAME) --query "Stacks[].Outputs[]" --region $(AWS_REGION)) > outputs.json
 
 # Map the output from cloudformation stacks into a better consumable key/value that can be accessed by clients.
-	cat ./outputs.json | docker run -i stedolan/jq "[ . [] | [ {\"key\": .OutputKey, \"value\": .OutputValue } ] | from_entries ] | add	" > ../app/src/config/stack.json
+	cat ./outputs.json | docker run -i stedolan/jq "[ . [] | [ {\"key\": .OutputKey, \"value\": .OutputValue } ] | from_entries ] | add	" > ../app/src/config/stack.production.json
 #[ . [] | [ {"key": .OutputKey, "value": .OutputValue } ] | from_entries ] | add	
 
 .PHONY:infrastructure
