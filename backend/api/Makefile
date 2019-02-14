@@ -6,6 +6,9 @@ else
     DETECTED_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
 endif
 
+.PHONY:clean
+clean:
+
 .PHONY:install
 install:
 	cd nodejs/ && npm install && cd ../
@@ -22,7 +25,8 @@ build:
 run:
 	sam local start-api --template ../cloudformation/api-stack.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug --docker-network sam-local --port 4000
 
+
 .PHONY:test
-test: build
-	cd nodejs/ && npm run test
+test:
+	set NODE_ENV=test&& cd nodejs/ && npm run test
 	cd go/ && go.exe test -v ./

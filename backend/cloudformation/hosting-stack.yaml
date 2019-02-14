@@ -1,13 +1,28 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Hello World Hosting Stack
+Description: Hello World Hosting Stack 
+Parameters:
+  StageName: 
+    Type: String
+    Description: "The stage name to deploy to."
 Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
+      BucketName: !Sub "hello-world-hosting-${StageName}"
       AccessControl: PublicRead
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - POST
+              - DELETE
+            AllowedOrigins:
+              - "*"
+            MaxAge: '30'
       WebsiteConfiguration:
         IndexDocument: index.html
-        ErrorDocument: index.html
 Outputs:
   WebsiteBucketName:
     Value: !Ref WebsiteBucket

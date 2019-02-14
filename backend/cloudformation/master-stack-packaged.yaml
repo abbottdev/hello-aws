@@ -31,16 +31,33 @@ Outputs:
   StorageStackRef:
     Value:
       Ref: StorageStack
+Parameters:
+  StageName:
+    Description: The stage name to deploy to.
+    Type: String
 Resources:
   ApiStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/8c43172063c4a5031ac0b84a2c4848e6.template
+      Parameters:
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/73779a9490f3533d0844631272675912.template
     Type: AWS::CloudFormation::Stack
   HostingStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/38186b3db59f79e607fdea8512031335.template
+      Parameters:
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/fcabb02f04acda56d4bc195cad9a5abf.template
     Type: AWS::CloudFormation::Stack
   StorageStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/ec6f8e813d7e914074eb3ec484ff6d3f.template
+      Parameters:
+        SeederLambdaFunctionArn:
+          Fn::GetAtt:
+          - ApiStack
+          - Outputs.SeederJsFunctionArn
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/c5a0e835455b4bbefe43c64b9ef1a85f.template
     Type: AWS::CloudFormation::Stack

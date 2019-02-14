@@ -1,16 +1,18 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: A dynamo db that stores random nouns which can be queried by an AWS lambda
+Parameters:
+  StageName: 
+    Type: String
+    Description: "The stage name to deploy to."
+  SeederLambdaFunctionArn:
+    Type: String
+    Description: Arn of the Lambda function used to initialise this resource
 Resources:
-  NounDynamoDbTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-      - AttributeName: NounId
-        AttributeType: S
-      KeySchema:
-      - AttributeName: NounId
-        KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+  NounDbStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ../storage/noun-db/noun-db-stack.yaml 
+      Parameters:
+        StageName: !Ref StageName
+        SeederLambdaFunctionArnParameter: !Ref SeederLambdaFunctionArn

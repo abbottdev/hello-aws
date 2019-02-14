@@ -1,6 +1,8 @@
 
 const axios = require('axios')
 const url = 'http://checkip.amazonaws.com/';
+const AWS = require('aws-sdk');
+
 let response;
 
 /**
@@ -39,22 +41,65 @@ let response;
  */
 exports.lambdaHandler = async (event, context) => {
     try {
-        const ret = await axios(url);
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'hello world',
-                location: ret.data.trim()
-            }),
-            'headers': {
-                "X-Requested-With": '*',
-                'Content-Type': 'application/json', 
-                "Access-Control-Allow-Headers": 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with',
-                "Access-Control-Allow-Origin": '*',
-                "Access-Control-Allow-Methods": 'POST,GET,OPTIONS',
-                "Cache-Control": "no-cache"
-            }
+        const MAX_KEY = 5;
+        const corsHeaders = {
+            "X-Requested-With": '*',
+            'Content-Type': 'application/json', 
+            "Access-Control-Allow-Headers": 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with',
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Methods": 'POST,GET,OPTIONS',
+            "Cache-Control": "no-cache"
+        };
+
+        let params = {apiVersion: '2012-08-10'}; 
+
+        const isLocalExecution = process.env["AWS_SAM_LOCAL"] == "true" || process.env.NODE_ENV == "test";
+
+        if (isLocalExecution) {
+            console.log("Detected local execution environment");
+            AWS.config.update({endpoint: "http://localstack:4569", region: "local"});
         }
+
+        const ret = await axios(url);
+        // Create DynamoDB service object
+        var ddb = new AWS.DynamoDB(params);
+
+        let key = Number.parseInt(Math.ceil(MAX_KEY * Math.random()));
+        
+        console.log("key is: " + key.toString());
+
+        var dynamoResponse = await ddb
+            .getItem({
+                TableName: "NounDynamoDbTable",
+                Key: {"NounId": {"S": key.toString() } }
+            })
+            .promise()
+            .then(data => {                        
+                console.log("returning");
+
+                return {
+                    'statusCode': 200,
+                    'body': JSON.stringify({
+                        message: data.Item.NounName.S + " world",
+                        location: ret.data.trim()
+                    })        
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                return {
+                    'statusCode': 500,
+                    'body': JSON.stringify({
+                        message: JSON.stringify(err),
+                        location: ""
+                    })        
+                }
+            });
+
+        response = {
+            ...dynamoResponse,
+            headers: corsHeaders
+        };     
     } catch (err) {
         console.log(err);
         return err;

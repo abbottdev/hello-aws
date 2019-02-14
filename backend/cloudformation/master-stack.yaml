@@ -1,18 +1,29 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: "API Stack CFN template"
+Parameters:
+  StageName: 
+    Type: String
+    Description: "The stage name to deploy to."
 Resources:
   HostingStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: ./hosting-stack.yaml
+      Parameters:
+        StageName: !Ref StageName
   ApiStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: ./api-stack.yaml
+      Parameters:
+        StageName: !Ref StageName
   StorageStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: ./storage-stack.yaml 
+      Parameters:
+        StageName: !Ref StageName
+        SeederLambdaFunctionArn: !GetAtt ApiStack.Outputs.SeederJsFunctionArn
 
 Outputs:
   StorageStackRef:

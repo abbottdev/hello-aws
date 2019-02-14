@@ -1,8 +1,8 @@
 {
-  "ClientWebsiteBucketName": "hello-world-master-stack-hostingsta-websitebucket-r57tsd9160a",
-  "ApiEndpointUrl": "https://3lvv1a7wkg.execute-api.eu-west-2.amazonaws.com/Prod/",
+  "ClientWebsiteBucketName": "hello-world-hosting-dev",
+  "ApiEndpointUrl": "https://iipbjtqly1.execute-api.eu-west-2.amazonaws.com/{StageName}/",
   "ApiRoleArn": "arn:aws:iam::158176244280:role/api-role",
-  "ApiStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-ApiStack-6A0D7ZDUHUNI/c300e130-2ed4-11e9-8a0c-0ad9e87c6998",
-  "StorageStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-master-stack-StorageStack-14B07W7EIZJ9J/c2e6a270-2ed4-11e9-9faf-0ab69c38e076",
-  "ClientWebsiteUrl": "https://hello-world-master-stack-hostingsta-websitebucket-r57tsd9160a.s3.amazonaws.com"
+  "ApiStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-ApiStack-DL9XTUYSL4HU/a650a5b0-3079-11e9-8363-069ff3a6dc30",
+  "StorageStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-StorageStack-WO4A8XEJM8K0/ccdd44e0-3079-11e9-9bc5-0a4ccf28bdfc",
+  "ClientWebsiteUrl": "https://hello-world-hosting-dev.s3.amazonaws.com"
 }

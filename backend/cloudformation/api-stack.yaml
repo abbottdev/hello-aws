@@ -5,7 +5,10 @@ Description: >
 Globals:
   Function:
     Timeout: 30
-
+Parameters:
+  StageName: 
+    Type: String
+    Description: "The stage name to deploy to."
 Resources:
   ApiRole:
     Type: AWS::IAM::Role
@@ -36,7 +39,7 @@ Resources:
   ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Prod
+      StageName: !Ref StageName
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
@@ -73,11 +76,20 @@ Resources:
             RestApiId: !Ref ApiGatewayApi
             Path: /hello-world-go
             Method: POST
+  
+  SeederJsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ../api/seeder/
+      Handler: app.handler
+      Runtime: nodejs8.10
+      Role: !GetAtt ApiRole.Arn
+      Timeout: 60
 
 Outputs:
   ApiEndpointUrl:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/{StageName}/"
   
   HelloWorldJsFunctionArn:
     Description: "Hello World Lambda Function ARN"
@@ -90,3 +102,7 @@ Outputs:
   HelloWorldGoFunctionArn:
     Description: "Hello World Go Lambda Function ARN"
     Value: !GetAtt HelloWorldGoFunction.Arn
+    
+  SeederJsFunctionArn:
+    Description: "Seeder Lambda Function ARN"
+    Value: !GetAtt SeederJsFunction.Arn

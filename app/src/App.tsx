@@ -4,12 +4,22 @@ import './App.css';
 import axios from 'axios';
 import Endpoints from './config/endpoints';
 
-class App extends Component<{Endpoints: Endpoints}, {results: string, hasResults: boolean}> {
+interface State {
+  results: string
+  hasResults: boolean
+  executing: boolean
+}
+
+class App extends Component<{Endpoints: Endpoints}, State> {
 
   constructor(props: any) {
     super(props);
         
-    this.state = { results: "", hasResults: false};
+    this.state = { results: "", hasResults: false, executing: false};
+  }
+  
+  componentDidMount() {
+    this.invokeNodeJsLambda();
   }
 
   invokeNodeJsLambda = () => {
@@ -17,13 +27,15 @@ class App extends Component<{Endpoints: Endpoints}, {results: string, hasResults
 
     this.setState({
       results: "",
-      hasResults: false
+      hasResults: false,
+      executing: true
     }, () => {
       axios.post(url).then(data => {
         debugger;
         this.setState({
           results: JSON.stringify(data.data),
-          hasResults: true
+          hasResults: true,
+          executing: false
         })
       }).catch(r => console.log(r));
     });
@@ -34,12 +46,14 @@ class App extends Component<{Endpoints: Endpoints}, {results: string, hasResults
 
     this.setState({
       results: "",
-      hasResults: false
+      hasResults: false,
+      executing: true
     }, () => {
       axios.post(url).then(data => { 
         this.setState({
           results: JSON.stringify(data.data),
-          hasResults: true
+          hasResults: true,
+          executing: false
         })
       }).catch(r => console.log(r));
     });

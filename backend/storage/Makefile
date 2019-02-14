@@ -1,23 +1,15 @@
 AWS_CLOUDFORMATION_BUCKET = hello-world-abbottdev
 
-.PHONY:install-storage
-install-storage:
-#		docker run -d -p 8000:8000 --network sam-local --name dynamodb amazon/dynamodb-local
-		docker run -v ${CURDIR}:/workdir mikefarah/yq yq r -j noun-db-stack.yaml Resources.HelloNounDbTable.Properties > create-table.json
+.PHONY:install
+install:
+		cd ./noun-db/ && $(MAKE) install AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
 
-		aws dynamodb describe-table --table-name HelloNounDb --endpoint-url http://localhost:4569 --region $(AWS_REGION) || \
-			aws dynamodb create-table --cli-input-json file://create-table.json --endpoint-url http://localhost:4569/ --table-name HelloNounDbTable --region $(AWS_REGION)
-			
-		rm create-table.json
+.PHONY:clean
+clean:
+		cd ./noun-db/ && $(MAKE) clean AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
 
-.PHONY:remove-storage
-remove-storage:
-	docker container stop localstack
-	docker container rm localstack
-	docker network rm sam-local
-
-.PHONY:reset-storage
-reset-storage: remove-storage install-storage
+# .PHONY:reset-storage
+# reset-storage: remove-storage install-storage
 
 
 
