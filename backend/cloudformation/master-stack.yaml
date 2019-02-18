@@ -5,25 +5,33 @@ Parameters:
     Type: String
     Description: "The stage name to deploy to."
 Resources:
+  AuthStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: ./auth-stack.yaml
+      Parameters:
+        StageName: !Ref StageName
   HostingStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: ./hosting-stack.yaml
       Parameters:
         StageName: !Ref StageName
+        CustomResourceEmptyBucketFunctionArn: !GetAtt ApiStack.Outputs.CustomResourceEmptyBucketFunctionArn
   ApiStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: ./api-stack.yaml
       Parameters:
         StageName: !Ref StageName
+        RoleArn: !GetAtt AuthStack.Outputs.ApiRoleArn
   StorageStack:
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: ./storage-stack.yaml 
       Parameters:
-        StageName: !Ref StageName
-        SeederLambdaFunctionArn: !GetAtt ApiStack.Outputs.SeederJsFunctionArn
+        StageName: !Ref StageName 
+        CustomResourceSeedDynamoDbFunctionArn: !GetAtt ApiStack.Outputs.CustomResourceSeedDynamoDbFunctionArn
 
 Outputs:
   StorageStackRef:
@@ -43,7 +51,3 @@ Outputs:
   ClientWebsiteBucketName:
     Description: "The S3 Bucket name used to host the client website"
     Value: !GetAtt HostingStack.Outputs.WebsiteBucketName
-
-  ApiRoleArn:
-    Description: "IAM Role created for Hello World Api"
-    Value: !GetAtt ApiStack.Outputs.ApiRoleArn

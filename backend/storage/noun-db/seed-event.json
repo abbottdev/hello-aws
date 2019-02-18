@@ -1,1 +1,83 @@
-{"LogicalResourceId":"MyTestResource","RequestId":"unique id for this create request","RequestType":"Create","ResourceProperties":{"List":["1","2","3"],"Region":"AWS::Region","RequestItems":[{"PutRequest":{"Item":{"NounId":{"S":"1"},"NounName":{"S":"Hello"}}}},{"PutRequest":{"Item":{"NounId":{"S":"2"},"NounName":{"S":"Bonjour"}}}},{"PutRequest":{"Item":{"NounId":{"S":"3"},"NounName":{"S":"Hallo"}}}},{"PutRequest":{"Item":{"NounId":{"S":"4"},"NounName":{"S":"Olá"}}}},{"PutRequest":{"Item":{"NounId":{"S":"5"},"NounName":{"S":"Hej"}}}}],"ServiceToken":{"Ref":"SeederLambdaFunctionArnParameter"},"StackName":"MyStack","TableName":"NounDynamoDbTable"},"ResourceType":"Custom::TestResource","ResponseURL":"http://pre-signed-S3-url-for-response","StackId":"arn:aws:cloudformation:us-east-1:123456789012:stack/MyStack/guid"}
+{
+  "LogicalResourceId": "MyTestResource",
+  "RequestId": "unique id for this create request",
+  "RequestType": "Create",
+  "ResourceProperties": {
+    "List": [
+      "1",
+      "2",
+      "3"
+    ],
+    "Region": "AWS::Region",
+    "RequestItems": [
+      {
+        "PutRequest": {
+          "Item": {
+            "NounId": {
+              "S": "1"
+            },
+            "NounName": {
+              "S": "Hello"
+            }
+          }
+        }
+      },
+      {
+        "PutRequest": {
+          "Item": {
+            "NounId": {
+              "S": "2"
+            },
+            "NounName": {
+              "S": "Bonjour"
+            }
+          }
+        }
+      },
+      {
+        "PutRequest": {
+          "Item": {
+            "NounId": {
+              "S": "3"
+            },
+            "NounName": {
+              "S": "Hallo"
+            }
+          }
+        }
+      },
+      {
+        "PutRequest": {
+          "Item": {
+            "NounId": {
+              "S": "4"
+            },
+            "NounName": {
+              "S": "Olá"
+            }
+          }
+        }
+      },
+      {
+        "PutRequest": {
+          "Item": {
+            "NounId": {
+              "S": "5"
+            },
+            "NounName": {
+              "S": "Hej"
+            }
+          }
+        }
+      }
+    ],
+    "ServiceToken": {
+      "Ref": "CustomResourceSeedDynamoDbFunctionArn"
+    },
+    "StackName": "MyStack",
+    "TableName": "NounDynamoDbTable-dev"
+  },
+  "ResourceType": "Custom::TestResource",
+  "ResponseURL": "http://pre-signed-S3-url-for-response",
+  "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/MyStack/guid"
+}

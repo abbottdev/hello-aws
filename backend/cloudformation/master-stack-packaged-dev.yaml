@@ -39,11 +39,11 @@ Resources:
           - Outputs.ApiRoleArn
         StageName:
           Ref: StageName
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/a731daacd83857f4731c91cc28666de6.template
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev/0b58d5d38e8007e395402e8f1bb3124e.template
     Type: AWS::CloudFormation::Stack
   AuthStack:
     Properties:
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/da9eb8ca10499f672c37bf91874a2476.template
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev/da9eb8ca10499f672c37bf91874a2476.template
     Type: AWS::CloudFormation::Stack
   HostingStack:
     Properties:
@@ -54,7 +54,7 @@ Resources:
           - Outputs.CustomResourceEmptyBucketFunctionArn
         StageName:
           Ref: StageName
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/3ac0f1516290463504621fdf5a60dd96.template
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev/3ac0f1516290463504621fdf5a60dd96.template
     Type: AWS::CloudFormation::Stack
   StorageStack:
     Properties:
@@ -65,5 +65,5 @@ Resources:
           - Outputs.CustomResourceSeedDynamoDbFunctionArn
         StageName:
           Ref: StageName
-      TemplateURL: https://s3.amazonaws.com/hello-world-abbottdev/3f93c6431f46eeec761ab5dddd420a70.template
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev/81d7e4e48919406004fd0dee95f3588f.template
     Type: AWS::CloudFormation::Stack

@@ -4,6 +4,9 @@ Parameters:
   StageName: 
     Type: String
     Description: "The stage name to deploy to."
+  CustomResourceEmptyBucketFunctionArn: 
+    Type: String
+    Description: "The ARN of the lambda for the lambda backed clear bucket custom resource "
 Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
@@ -23,6 +26,15 @@ Resources:
             MaxAge: '30'
       WebsiteConfiguration:
         IndexDocument: index.html
+
+  CustomResourceEmptyBucket:
+    DependsOn: WebsiteBucket
+    Type: Custom::CustomResourceEmptyBucket
+    Properties:
+      ServiceToken: 
+        Ref: CustomResourceEmptyBucketFunctionArn
+      Region: !Ref "AWS::Region"
+      BucketName: !Ref WebsiteBucket
 Outputs:
   WebsiteBucketName:
     Value: !Ref WebsiteBucket

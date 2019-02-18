@@ -4,10 +4,11 @@ Description: A dynamo db that stores random nouns which can be queried by an AWS
 Parameters:
   StageName: 
     Type: String
-    Description: "The stage name to deploy to."
-  SeederLambdaFunctionArn:
+    Description: "The stage name to deploy to." 
+  CustomResourceSeedDynamoDbFunctionArn:
     Type: String
-    Description: Arn of the Lambda function used to initialise this resource
+    Description: "The ARN of the Lambda function used to seed resources"
+
 Resources:
   NounDbStack:
     Type: AWS::CloudFormation::Stack
@@ -15,4 +16,4 @@ Resources:
       TemplateURL: ../storage/noun-db/noun-db-stack.yaml 
       Parameters:
         StageName: !Ref StageName
-        SeederLambdaFunctionArnParameter: !Ref SeederLambdaFunctionArn
+        CustomResourceSeedDynamoDbFunctionArn: !Ref CustomResourceSeedDynamoDbFunctionArn

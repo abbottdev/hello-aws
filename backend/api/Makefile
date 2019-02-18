@@ -9,6 +9,9 @@ endif
 .PHONY:clean
 clean:
 
+.PHONY:local-env
+local-env:
+
 .PHONY:install
 install:
 	cd nodejs/ && npm install && cd ../
@@ -21,10 +24,17 @@ build:
 	cd go/ && set GOOS=linux&& set GOARCH=amd64&& set CGO_ENABLED=0&& go.exe build -i -o "build/main" main.go 
 	cd go/build && "$(GOPATH)\bin\build-lambda-zip.exe" -o main.zip main
 
-.PHONY:run
-run:
-	sam local start-api --template ../cloudformation/api-stack.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --debug --docker-network sam-local --port 4000
-
+.PHONY:start
+start:
+	set StageName=$(STAGE_NAME)&&\
+	sam local start-api \
+		--template ../cloudformation/api-stack.yaml \
+		--profile $(AWS_PROFILE) \
+		--region $(AWS_REGION) \
+		--debug \
+		--docker-network sam-local \
+		--port 4000 \
+		-n "./env.$(STAGE_NAME).json"
 
 .PHONY:test
 test:

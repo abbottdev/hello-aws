@@ -9,33 +9,11 @@ Parameters:
   StageName: 
     Type: String
     Description: "The stage name to deploy to."
-Resources:
-  ApiRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: api-role
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              Service: 
-                - "lambda.amazonaws.com"
-                - "apigateway.amazonaws.com"
-            Action: 
-              - "sts:AssumeRole"
-      Path: "/"
-      Policies: 
-        - PolicyName: api-role-policy
-          PolicyDocument: 
-            Version: "2012-10-17"
-            Statement: 
-              - 
-                Effect: "Allow"
-                Action: "*"
-                Resource: "*"
+  RoleArn:
+    Type: String
+    Description: "The arn of the Role to use for the Api"
 
+Resources:
   ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -45,15 +23,16 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: ../api/swagger.yaml
-            
   HelloWorldJsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: ../api/nodejs/
       Handler: app.lambdaHandler
       Runtime: nodejs8.10
-      Role: !GetAtt ApiRole.Arn
+      Role: !Ref RoleArn
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          StageName: !Ref StageName
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -68,41 +47,53 @@ Resources:
       CodeUri: ../api/go/build/main.zip
       Handler: main
       Runtime: go1.x
-      Role: !GetAtt ApiRole.Arn
+      Role: !Ref RoleArn
+      Environment:
+        Variables:
+          StageName: !Ref StageName
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             RestApiId: !Ref ApiGatewayApi
             Path: /hello-world-go
-            Method: POST
-  
-  SeederJsFunction:
+            Method: POST  
+
+  CustomResourceSeedDynamoDbFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ../api/seeder/
+      CodeUri: ../api/custom-resources/seed-dynamodb/      
       Handler: app.handler
       Runtime: nodejs8.10
-      Role: !GetAtt ApiRole.Arn
+      Role: !Ref RoleArn
+      Timeout: 60
+      
+  CustomResourceEmptyBucketFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ../api/custom-resources/empty-bucket/      
+      Handler: index.handler
+      Runtime: nodejs8.10
+      Role: !Ref RoleArn
       Timeout: 60
 
 Outputs:
   ApiEndpointUrl:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/{StageName}/"
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/"
   
   HelloWorldJsFunctionArn:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldJsFunction.Arn
 
-  ApiRoleArn:
-    Description: "IAM Role created for the Api Gateway"
-    Value: !GetAtt ApiRole.Arn
-
   HelloWorldGoFunctionArn:
     Description: "Hello World Go Lambda Function ARN"
     Value: !GetAtt HelloWorldGoFunction.Arn
+
+  CustomResourceSeedDynamoDbFunctionArn:
+    Description: "ARN of the function that seeds dynamodb resources"
+    Value: !GetAtt CustomResourceSeedDynamoDbFunction.Arn
     
-  SeederJsFunctionArn:
-    Description: "Seeder Lambda Function ARN"
-    Value: !GetAtt SeederJsFunction.Arn
+  CustomResourceEmptyBucketFunctionArn:
+    Description: "ARN of the function that clears a S3 bucket"
+    Value: !GetAtt CustomResourceEmptyBucketFunction.Arn

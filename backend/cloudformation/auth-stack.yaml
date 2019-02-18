@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Hello World Hosting Stack 
+Parameters:
+  StageName: 
+    Type: String
+    Description: "The stage name to deploy to."
+Resources:
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "api-role-${StageName}"
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "lambda.amazonaws.com"
+                - "apigateway.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies: 
+        - PolicyName: api-role-policy
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+Outputs:
+  ApiRoleArn:
+    Description: "IAM Role that was created for the Api Gateway"
+    Value: !GetAtt ApiRole.Arn

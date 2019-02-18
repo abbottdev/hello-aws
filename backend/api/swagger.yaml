@@ -26,7 +26,7 @@ paths:
           content: {}
       x-amazon-apigateway-integration:
         credentials:
-          Fn::GetAtt: ApiRole.Arn
+          Ref: RoleArn
         type: aws_proxy
         httpMethod: POST
         uri: 
@@ -72,7 +72,7 @@ paths:
     post:
       x-amazon-apigateway-integration:
         credentials:
-          Fn::GetAtt: ApiRole.Arn
+          Ref: RoleArn
         type: aws_proxy
         httpMethod: POST
         uri: 

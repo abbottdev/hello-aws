@@ -5,7 +5,7 @@ Parameters:
   StageName: 
     Type: String
     Description: "The stage name to deploy to."
-  SeederLambdaFunctionArnParameter:
+  CustomResourceSeedDynamoDbFunctionArn:
     Type: String
     Description: Arn of the Lambda function used to initialise this resource
 
@@ -24,12 +24,12 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 
-  DynamoDbSeederResource:
+  SeedNounDynamoDbTable:
     DependsOn: NounDynamoDbTable
     Type: Custom::DynamoDbSeederResource
     Properties:
       ServiceToken: 
-        Ref: SeederLambdaFunctionArnParameter
+        Ref: CustomResourceSeedDynamoDbFunctionArn
       Region: !Ref "AWS::Region"
       TableName: !Ref NounDynamoDbTable
       RequestItems:

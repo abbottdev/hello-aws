@@ -1,8 +1,7 @@
 {
-  "ClientWebsiteBucketName": "hello-world-hosting-dev",
-  "ApiEndpointUrl": "https://iipbjtqly1.execute-api.eu-west-2.amazonaws.com/{StageName}/",
-  "ApiRoleArn": "arn:aws:iam::158176244280:role/api-role",
-  "ApiStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-ApiStack-DL9XTUYSL4HU/a650a5b0-3079-11e9-8363-069ff3a6dc30",
-  "StorageStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-StorageStack-WO4A8XEJM8K0/ccdd44e0-3079-11e9-9bc5-0a4ccf28bdfc",
-  "ClientWebsiteUrl": "https://hello-world-hosting-dev.s3.amazonaws.com"
+  "ClientWebsiteBucketName": "hello-world-hosting-dev2",
+  "ApiEndpointUrl": "https://x64s3gu0cd.execute-api.eu-west-2.amazonaws.com/dev2/",
+  "ApiStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-dev2-ApiStack-6JJI05WBH7TE/7c691210-33a2-11e9-966f-0208395e2c4a",
+  "StorageStackRef": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-dev2-StorageStack-1HFCBADQBXEJH/92d34a70-33a2-11e9-9840-066491b27f84",
+  "ClientWebsiteUrl": "https://hello-world-hosting-dev2.s3.amazonaws.com"
 }

@@ -39,13 +39,20 @@ let response;
  * @returns {Object} object.body - JSON Payload to be returned
  * 
  */
+console.log("Initialising - process env: " + process.env.StageName);
+
+const DynamoDbTableName = "NounDynamoDbTable";
+const nounDbTableName = DynamoDbTableName + '-' + process.env.StageName;
+
 exports.lambdaHandler = async (event, context) => {
     try {
+        console.log("lambdaHandler - process env: " + process.env.StageName);
+
         const MAX_KEY = 5;
         const corsHeaders = {
             "X-Requested-With": '*',
             'Content-Type': 'application/json', 
-            "Access-Control-Allow-Headers": 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with',
+            "Access-Control-Allow-Headers": '*',
             "Access-Control-Allow-Origin": '*',
             "Access-Control-Allow-Methods": 'POST,GET,OPTIONS',
             "Cache-Control": "no-cache"
@@ -67,10 +74,11 @@ exports.lambdaHandler = async (event, context) => {
         let key = Number.parseInt(Math.ceil(MAX_KEY * Math.random()));
         
         console.log("key is: " + key.toString());
+        console.log("Table name is: " + nounDbTableName)
 
         var dynamoResponse = await ddb
             .getItem({
-                TableName: "NounDynamoDbTable",
+                TableName: nounDbTableName,
                 Key: {"NounId": {"S": key.toString() } }
             })
             .promise()

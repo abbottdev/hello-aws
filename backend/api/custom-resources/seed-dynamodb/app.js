@@ -1,4 +1,5 @@
-var response = require('cfn-response');
+const customResource = require('custom-resource-env');
+
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');
 
@@ -20,30 +21,26 @@ var AWS = require('aws-sdk');
  * @param {object} event.ResourceProperties.RequestItems - The items to be created on the dynamodb instance
  **/
 exports.handler = function(event, context) {
-  const isLocal = process.env["AWS_SAM_LOCAL"] == "true";
   
-  if (isLocal)
-    console.log("Detected local execution...");
+  customResource.cloudFormationEventContext(event, context, async () => {
+    if (customResource.useLocalEnv) AWS.config.update({endpoint: customResource.localEnv.endpoints.DynamoDb});
+
+    var responseData = {Value: "Custom Response Data"};
     
-  var responseData = {Value: "Custom Response Data"};
-  
-  let eventJson = JSON.stringify(event);
+    let eventJson = JSON.stringify(event);
 
-  console.log("Custom Init Function");
-  console.log("Event: ");
-  console.log(eventJson);
+    console.log("Custom Init Function");
+    console.log("Event: ");
+    console.log(eventJson);
 
-  switch(event.RequestType) {
-    case "Update":
-    case "Create":
-      addOrUpdateItems(event.ResourceProperties.RequestItems, event.ResourceProperties.Region, event.ResourceProperties.TableName, isLocal);
-    default:    
-      break;
-  }
-
-  if (!isLocal)
-    response.send(event, context, response.SUCCESS, responseData);
-
+    switch(event.RequestType) {
+      case "Update":
+      case "Create":
+        addOrUpdateItems(event.ResourceProperties.RequestItems, event.ResourceProperties.Region, event.ResourceProperties.TableName);
+      default:    
+        break;
+    }
+  });
 };
 
 /**
@@ -51,16 +48,9 @@ exports.handler = function(event, context) {
  * @param {string} tableName
  * @param {string} regionName
  **/
-addOrUpdateItems = async function (requestItems, regionName, tableName, isLocalExecution) {
+addOrUpdateItems = async function (requestItems, regionName, tableName) {
   
   let params = {apiVersion: '2012-08-10'}; 
-
-  if (isLocalExecution) {
-    AWS.config.update({region: "local", endpoint: "http://localstack:4569"});
-  }  else {
-    // Set the region
-    AWS.config.update({region: regionName});
-  }
 
   // Create DynamoDB service object
   var ddb = new AWS.DynamoDB(params);

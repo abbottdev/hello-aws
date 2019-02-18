@@ -15,8 +15,8 @@ install:
 build:
 	npm run build
 
-.PHONY:run
-run: 
+.PHONY:start
+start: 
 	npm start
 
 .PHONY:test
@@ -31,9 +31,9 @@ outputs:
 	
 
 .PHONY:deploy
-deploy: 
+deploy: build
 		$(eval ClientWebsiteBucketName = $(shell cat ./src/config/stack.production.json | docker run -i stedolan/jq -r .ClientWebsiteBucketName)) \
-			aws s3 sync build/ s3://$(ClientWebsiteBucketName)/ --acl public-read --profile $(AWS_PROFILE) --region $(AWS_REGION) --website-redirect /index.html
+			aws s3 sync build/ s3://$(ClientWebsiteBucketName)/ --acl public-read --profile $(AWS_PROFILE) --region $(AWS_REGION) --metadata Cache-Control=no-cache
 
 .PHONY:launch
 launch:
