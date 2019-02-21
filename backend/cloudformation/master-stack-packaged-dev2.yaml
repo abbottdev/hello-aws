@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: API Stack CFN template
+Outputs:
+  ApiEndpointUrl:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::GetAtt:
+      - ApiStack
+      - Outputs.ApiEndpointUrl
+  ApiStackRef:
+    Value:
+      Ref: ApiStack
+  ClientWebsiteBucketName:
+    Description: The S3 Bucket name used to host the client website
+    Value:
+      Fn::GetAtt:
+      - HostingStack
+      - Outputs.WebsiteBucketName
+  ClientWebsiteUrl:
+    Description: The URL used to access the frontend website
+    Value:
+      Fn::GetAtt:
+      - HostingStack
+      - Outputs.S3BucketSecureURL
+  StorageStackRef:
+    Value:
+      Ref: StorageStack
+Parameters:
+  StageName:
+    Description: The stage name to deploy to.
+    Type: String
+Resources:
+  ApiStack:
+    Properties:
+      Parameters:
+        RoleArn:
+          Fn::GetAtt:
+          - AuthStack
+          - Outputs.ApiRoleArn
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev2/4121ef0dbd898b558a1be32822dea890.template
+    Type: AWS::CloudFormation::Stack
+  AuthStack:
+    Properties:
+      Parameters:
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev2/92266512ac45e23dfe0124739aab7bd8.template
+    Type: AWS::CloudFormation::Stack
+  HostingStack:
+    Properties:
+      Parameters:
+        CustomResourceEmptyBucketFunctionArn:
+          Fn::GetAtt:
+          - ApiStack
+          - Outputs.CustomResourceEmptyBucketFunctionArn
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev2/3ac0f1516290463504621fdf5a60dd96.template
+    Type: AWS::CloudFormation::Stack
+  StorageStack:
+    Properties:
+      Parameters:
+        CustomResourceSeedDynamoDbFunctionArn:
+          Fn::GetAtt:
+          - ApiStack
+          - Outputs.CustomResourceSeedDynamoDbFunctionArn
+        StageName:
+          Ref: StageName
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev2/ec93314ce25d9bf1ff040865afb88a7c.template
+    Type: AWS::CloudFormation::Stack
