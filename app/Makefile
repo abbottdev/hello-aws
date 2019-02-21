@@ -2,7 +2,9 @@
 .PHONY:clean
 clean:
 	
-
+.PHONY:local-env
+local-env:
+	
 .PHONY:install
 install:
 	$(NPM) install

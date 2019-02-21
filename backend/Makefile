@@ -1,4 +1,4 @@
-AWS_CLOUDFORMATION_BUCKET=stack-templates-$(AWS_STACK_NAME)-$(STAGE_NAME)
+export AWS_CLOUDFORMATION_BUCKET=stack-templates-$(AWS_STACK_NAME)-$(STAGE_NAME)
 
 .PHONY:deps
 deps:

@@ -22,14 +22,16 @@ create-table:
 .PHONY:generate-seed-event
 generate-seed-event:
 #	Make the local-seed-event based on the noundb custom resource here
+
 	YQ_CLI = $(docker run -v ${CURDIR}:/workdir mikefarah/yq yq)
 
 	$(AWS_SAM_CLI) local generate-event cloudformation create-request > seed-request-event.json
 
-	$(YQ_CLI) r noun-db-stack.yaml Resources.DynamoDbSeederResource.Properties > seed-event.yaml
+	$(YQ_CLI) r noun-db-stack.yaml Resources.SeedNounDynamoDbTable.Properties > seed-event.yaml
 	$(YQ_CLI) p -i seed-event.yaml ResourceProperties
 	$(YQ_CLI) m -i seed-event.yaml seed-request-event.json
 	$(YQ_CLI) r -j seed-event.yaml > seed-request-event.json
+
 	rm seed-event.yaml
 # Add the stageName to the table name we create locally (This would normally be done because we use !Ref <TABLE> to get a table name, but sam local doesn't transform)
 	cat ./seed-request-event.json | docker run -i stedolan/jq ".ResourceProperties.TableName = .ResourceProperties.TableName + \"-$(STAGE_NAME)\" " > seed-event.json	

@@ -1,11 +1,4 @@
 
-
-ifeq ($(OS),Windows_NT) 
-    DETECTED_OS := Windows
-else
-    DETECTED_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
-endif
-
 .PHONY:clean
 clean:
 
@@ -60,3 +53,5 @@ test:
 	cd ./nodejs/ && $(MAKE) test -e
 	
 	cd go/ && go.exe test -v ./
+
+
