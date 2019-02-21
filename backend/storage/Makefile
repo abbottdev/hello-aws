@@ -1,13 +1,12 @@
-AWS_CLOUDFORMATION_BUCKET = hello-world-abbottdev
 
 .PHONY:install
 install:
-		cd ./noun-db/ && $(MAKE) install AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
+		cd ./noun-db/ && $(MAKE) install -e
 
 .PHONY:local-env
 local-env:
-		cd ./noun-db/ && $(MAKE) local-env AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
+		cd ./noun-db/ && $(MAKE) local-env -e
 
 .PHONY:clean
 clean:
-		cd ./noun-db/ && $(MAKE) clean AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
+		cd ./noun-db/ && $(MAKE) clean  -e

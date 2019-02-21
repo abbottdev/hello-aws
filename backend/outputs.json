@@ -2,24 +2,24 @@
     {
         "Description": "The S3 Bucket name used to host the client website", 
         "OutputKey": "ClientWebsiteBucketName", 
-        "OutputValue": "hello-world-hosting-dev2"
+        "OutputValue": "hello-world-hosting-dev"
     }, 
     {
         "Description": "API Gateway endpoint URL for Prod stage for Hello World function", 
         "OutputKey": "ApiEndpointUrl", 
-        "OutputValue": "https://x64s3gu0cd.execute-api.eu-west-2.amazonaws.com/dev2/"
+        "OutputValue": "https://qru4q03v8i.execute-api.eu-west-2.amazonaws.com/dev/"
     }, 
     {
         "OutputKey": "ApiStackRef", 
-        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-dev2-ApiStack-6JJI05WBH7TE/7c691210-33a2-11e9-966f-0208395e2c4a"
+        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-dev-ApiStack-13OV1YUJ6OQ20/81772260-35d7-11e9-9bc5-0a4ccf28bdfc"
     }, 
     {
         "OutputKey": "StorageStackRef", 
-        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-dev2-StorageStack-1HFCBADQBXEJH/92d34a70-33a2-11e9-9840-066491b27f84"
+        "OutputValue": "arn:aws:cloudformation:eu-west-2:158176244280:stack/hello-world-dev-StorageStack-1I7VSANIH07QG/97d2b4c0-35d7-11e9-b72f-0234cd8b818c"
     }, 
     {
         "Description": "The URL used to access the frontend website", 
         "OutputKey": "ClientWebsiteUrl", 
-        "OutputValue": "https://hello-world-hosting-dev2.s3.amazonaws.com"
+        "OutputValue": "https://hello-world-hosting-dev.s3.amazonaws.com"
     }
 ]

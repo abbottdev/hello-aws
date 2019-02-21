@@ -1,9 +1,9 @@
-AWS_CLOUDFORMATION_BUCKET=stack-templates-$(AWS_STACK_NAME)-$(STAGE_NAME)
+export AWS_CLOUDFORMATION_BUCKET=stack-templates-$(AWS_STACK_NAME)-$(STAGE_NAME)
 
 .PHONY:clean
 clean:
-	cd api && $(MAKE) clean AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
-	cd storage && $(MAKE) clean AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION)
+	cd api && $(MAKE) clean -e
+	cd storage && $(MAKE) clean -e
 	
 	docker container inspect localstack && docker container stop localstack 
 	docker container inspect localstack && docker container rm localstack 
@@ -14,26 +14,26 @@ install:
 	docker network inspect sam-local || docker network create sam-local
 	docker container inspect localstack || docker run -d -p 4567-4592:4567-4592 -p 8080:8080 --network sam-local --name localstack localstack/localstack
 
-	cd api && $(MAKE) install AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
-	cd storage && $(MAKE) install AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
+	cd api && $(MAKE) install -e
+	cd storage && $(MAKE) install -e
 
 .PHONY:local-env
 local-env:
-	cd api && $(MAKE) local-env AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
-	cd storage && $(MAKE) local-env AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME) AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
+	cd api && $(MAKE) local-env -e
+	cd storage && $(MAKE) local-env -e
 
 .PHONY:build
 build:
-	cd api && $(MAKE) build STAGE_NAME=$(STAGE_NAME)
+	cd api && $(MAKE) build -e
 
 .PHONY:start
 start: build
 	docker container top localstack || docker container start localstack
-	cd api && $(MAKE) start STAGE_NAME=$(STAGE_NAME)
+	cd api && $(MAKE) start -e
 
 .PHONY:test
 test:
-	cd api && $(MAKE) test STAGE_NAME=$(STAGE_NAME)
+	cd api && $(MAKE) test -e
 
 .PHONY:package
 package: 

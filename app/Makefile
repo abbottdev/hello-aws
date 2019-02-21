@@ -6,7 +6,9 @@ AWS_REGION ?=eu-west-2
 .PHONY:clean
 clean:
 	
-
+.PHONY:local-env
+local-env:
+	
 .PHONY:install
 install:
 	npm install

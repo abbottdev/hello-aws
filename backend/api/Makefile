@@ -1,11 +1,4 @@
 
-
-ifeq ($(OS),Windows_NT) 
-    DETECTED_OS := Windows
-else
-    DETECTED_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
-endif
-
 .PHONY:clean
 clean:
 
@@ -40,3 +33,5 @@ start:
 test:
 	set NODE_ENV=test&& cd nodejs/ && npm run test
 	cd go/ && go.exe test -v ./
+
+
