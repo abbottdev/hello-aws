@@ -1,5 +1,5 @@
 var AWS = require('aws-sdk');
-var customResource = require('custom-resource-env');
+var customResource = require('./custom-resource-env');
 
 const s3 = new AWS.S3();    
 

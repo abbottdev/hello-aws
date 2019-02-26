@@ -39,7 +39,7 @@ Resources:
           - Outputs.ApiRoleArn
         StageName:
           Ref: StageName
-      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev/c6989d68fbad4ccbf65226e5231705ff.template
+      TemplateURL: https://s3.amazonaws.com/stack-templates-hello-world-dev/bbf108189367a3dc7c5081106107e9d9.template
     Type: AWS::CloudFormation::Stack
   AuthStack:
     Properties:

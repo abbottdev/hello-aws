@@ -40,24 +40,6 @@ Resources:
             RestApiId: !Ref ApiGatewayApi
             Path: /hello-world-js
             Method: POST
-  
-  HelloWorldGoFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: ../api/go/build/main.zip
-      Handler: main
-      Runtime: go1.x
-      Role: !Ref RoleArn
-      Environment:
-        Variables:
-          StageName: !Ref StageName
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref ApiGatewayApi
-            Path: /hello-world-go
-            Method: POST  
 
   CustomResourceSeedDynamoDbFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -85,10 +67,6 @@ Outputs:
   HelloWorldJsFunctionArn:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldJsFunction.Arn
-
-  HelloWorldGoFunctionArn:
-    Description: "Hello World Go Lambda Function ARN"
-    Value: !GetAtt HelloWorldGoFunction.Arn
 
   CustomResourceSeedDynamoDbFunctionArn:
     Description: "ARN of the function that seeds dynamodb resources"

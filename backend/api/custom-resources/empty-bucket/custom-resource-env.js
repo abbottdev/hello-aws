@@ -1,12 +1,15 @@
 var response = require('cfn-response');
 var AWS = require('aws-sdk');
 
-const localEnvEndpoints = require('./local-stack-endpoints');
+
 const isLocalExecutionEnv = process.env["AWS_SAM_LOCAL"] == "true" || process.env["NODE_ENV"] == "test";
 const envRegionName = process.env["AWS_REGION"];
 
 exports.localEnv = {
-  endpoints: localEnvEndpoints.default
+  endpoints: {
+    DynamoDb: "http://localstack:4569/",
+    S3: "http://localstack:4572/"
+  }
 };
 
 exports.useLocalEnv =  isLocalExecutionEnv;

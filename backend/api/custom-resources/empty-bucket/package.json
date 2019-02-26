@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.404.0",
-    "cfn-response": "^1.0.1",
-    "custom-resource-env": "file:../custom-resource-env"
+    "cfn-response": "^1.0.1"
   }
 }

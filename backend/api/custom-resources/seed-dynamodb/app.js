@@ -1,4 +1,4 @@
-const customResource = require('custom-resource-env');
+const customResource = require('./custom-resource-env');
 
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');

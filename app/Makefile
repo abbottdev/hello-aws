@@ -1,3 +1,4 @@
+include ../config.Makefile
 
 .PHONY:clean
 clean:

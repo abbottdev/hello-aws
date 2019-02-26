@@ -1,87 +1,69 @@
-STAGE_NAME?=dev
-
-ifeq ($(OS),Windows_NT) 
-    DETECTED_OS := Windows
-else
-    DETECTED_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
-endif
-
-export DETECTED_OS
-export AWS_STACK_NAME:=hello-world
-export AWS_PROFILE:=hello-world-profile
-export AWS_REGION:=eu-west-2
-#export AWS_SAM_CLI:=docker run -v $(shell pwd):/source/ -w /source/ -v ~/.aws:/home/samcli/.aws pahud/aws-sam-cli:latest sam
-export AWS_SAM_CLI:=sam
-#export AWS_CLI:=docker run --tty -i --rm -v $(shell pwd):/source -w /source -v ~/.aws:/home/samcli/.aws pahud/aws-sam-cli:latest aws
-export AWS_CLI:=aws
-export STAGE_NAME
-#export NPM:=docker run --tty -i --rm -v $$(CURDIR)/:/home/node/app/ -w /home/node/app/ node:alpine npm
-export NPM:=npm
+include config.Makefile
 
 .PHONY:deps
 deps:
 
-	cd backend && $(MAKE) clean -e
+	cd backend && $(MAKE) clean
 
 .PHONY:clean
 clean: 
 
-	cd backend && $(MAKE) clean -e
-	cd app && $(MAKE) clean -e
+	cd backend && $(MAKE) clean
+	cd app && $(MAKE) clean
 	
 .PHONY:install
 install:
 	cp scripts/githooks/* .git/hooks
-	cd backend && $(MAKE) install -e
-	cd app && $(MAKE) install -e
+	cd backend && $(MAKE) install
+	cd app && $(MAKE) install
 
 .PHONY:local-env
 local-env:
-	cd backend && $(MAKE) local-env -e
-	cd app && $(MAKE) local-env -e
+	cd backend && $(MAKE) local-env
+	cd app && $(MAKE) local-env
 
 .PHONY:build
 build:
 
-	cd backend && $(MAKE) build -e
-	cd app && $(MAKE) build -e
+	cd backend && $(MAKE) build
+	cd app && $(MAKE) build
 
 .PHONY:start
 start:
-	$(MAKE) start-api start-app -j 2 -e
+	$(MAKE) start-api start-app -j 2
 
 .PHONY:start-api
 start-api:
 
-	(cd backend && $(MAKE) start -e ) 
+	(cd backend && $(MAKE) start ) 
 
 .PHONY:start-app
 start-app:
-	(cd app && $(MAKE) start -e )
+	(cd app && $(MAKE) start )
 
 .PHONY:test
 test: 
-	cd backend && $(MAKE) test -e
-	cd app && $(MAKE) test -e
+	cd backend && $(MAKE) test
+	cd app && $(MAKE) test 
 
 .PHONY:package
 package: 
-	cd backend && $(MAKE) package -e
+	cd backend && $(MAKE) package 
 #	cd app && $(MAKE) package  AWS_PROFILE=$(AWS_PROFILE) AWS_STACK_NAME=$(AWS_STACK_NAME)  AWS_REGION=$(AWS_REGION) STAGE_NAME=$(STAGE_NAME)
 
 .PHONY:outputs
 outputs: 
 
-	cd backend && $(MAKE) outputs -e
-	cd app && $(MAKE) outputs -e
+	cd backend && $(MAKE) outputs 
+	cd app && $(MAKE) outputs 
 
 .PHONY:deploy
 
-	cd backend && $(MAKE) deploy -e
-	cd app && $(MAKE) deploy -e
+	cd backend && $(MAKE) deploy 
+	cd app && $(MAKE) deploy 
 
 .PHONY:infrastructure
 infrastructure: 
 
-	cd backend && $(MAKE) infrastructure -e
-	cd app && $(MAKE) infrastructure -e
+	cd backend && $(MAKE) infrastructure 
+	cd app && $(MAKE) infrastructure 
